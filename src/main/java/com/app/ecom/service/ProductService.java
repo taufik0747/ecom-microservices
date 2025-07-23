@@ -54,14 +54,24 @@ public class ProductService {
                     return mapToProductResponse(savedProduct);
                 });
 
-        
+
+    }
+    // Add this method in ProductService.java around line 50
+    public ProductResponse getProductById(Long id) {
+        return productRepository.findById(id)
+                .filter(Product::getActive)  // Only return active products
+                .map(this::mapToProductResponse)
+                .orElseThrow(() -> new RuntimeException("Product not found with id: " + id));
     }
 
+    // Also modify the getAllProducts method to add logging
     public List<ProductResponse> getAllProducts() {
-        return  productRepository.findByActiveTrue().stream()
+        System.out.println("Fetching all active products from feature branch");
+        return productRepository.findByActiveTrue().stream()
                 .map(this::mapToProductResponse)
                 .collect(Collectors.toList());
     }
+
 
     public boolean deleteProduct(Long id) {
         return productRepository.findById(id).map(product -> { product.setActive(false); productRepository.save(product); return true;}).orElse(false);
