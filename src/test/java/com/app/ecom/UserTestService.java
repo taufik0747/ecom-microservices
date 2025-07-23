@@ -31,7 +31,7 @@ import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 @DisplayName("UserService Unit Tests")
-class UserServiceTest {
+class UserTestService {
 
     @Mock
     private UserRepository userRepository;
@@ -542,6 +542,33 @@ class UserServiceTest {
         user.setRole(UserRole.ADMIN);
         user.setCreatedAt(LocalDateTime.now());
         user.setUpdatedAt(LocalDateTime.now());
+        return user;
+    }
+
+
+    private User createValidUser() {
+        User user = new User();
+        user.setId(1L);
+        user.setFirstName("John");
+        user.setLastName("Doe");
+        user.setEmail("john.doe@example.com");
+        user.setPhone("123-456-7890");
+        user.setRole(UserRole.CUSTOMER);
+        user.setCreatedAt(LocalDateTime.now());
+        user.setUpdatedAt(LocalDateTime.now());
+        return user;
+    }
+
+    private User createValidUserWithAddress() {
+        User user = createValidUser();
+        Address address = new Address();
+        address.setId(1L);
+        address.setStreet("123 Main St");
+        address.setCity("New York");
+        address.setState("NY");
+        address.setCountry("USA");
+        address.setZipcode("10001");
+        user.setAddress(address);
         return user;
     }
 }
